@@ -7,6 +7,11 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
 
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader || authHeader !== process.env.TOKEN) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const comment = await request.json();
     const newComment = {
         id: comments.length + 1,
